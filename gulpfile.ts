@@ -1,9 +1,11 @@
-import { src, dest, parallel } from "gulp";
+import { src, dest, parallel, TaskFunction } from "gulp";
 import _sass from "sass";
 import gulpSass from "gulp-sass";
 import cleanCSS from "gulp-clean-css";
 import rename from "gulp-rename";
 import typescript from "gulp-typescript";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 
 const sass = gulpSass(_sass);
 
@@ -35,4 +37,18 @@ const assetsTask = () =>
         // output
         .pipe(dest("./dist/assets"));
 
-export default parallel(styleTask, scriptTask, assetsTask);
+// version.txt
+const versionTask: TaskFunction = async (cb) => {
+    const distDir = path.join(__dirname, "dist");
+    const { version } = await import("./package.json");
+    try {
+        await mkdir(distDir, { recursive: true });
+        await writeFile(path.join(distDir, "version.txt"), version);
+
+        cb();
+    } catch (error: any) {
+        cb(error);
+    }
+};
+
+export default parallel(styleTask, scriptTask, assetsTask, versionTask);
