@@ -29,4 +29,10 @@ const scriptTask = () =>
         // output
         .pipe(dest("./dist"));
 
-export default parallel(styleTask, scriptTask);
+// assets (images)
+const assetsTask = () =>
+    src("assets/*")
+        // output
+        .pipe(dest("./dist/assets"));
+
+export default parallel(styleTask, scriptTask, assetsTask);
