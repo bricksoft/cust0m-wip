@@ -1,11 +1,12 @@
-import { src, dest, parallel, TaskFunction } from "gulp";
-import _sass from "sass";
-import gulpSass from "gulp-sass";
+import { mkdir, writeFile } from "fs/promises";
+import { dest, parallel, src, TaskFunction } from "gulp";
 import cleanCSS from "gulp-clean-css";
 import rename from "gulp-rename";
+import gulpSass from "gulp-sass";
 import typescript from "gulp-typescript";
-import { writeFile, mkdir } from "fs/promises";
+import uglify from "gulp-uglify-es";
 import path from "path";
+import _sass from "sass";
 
 const sass = gulpSass(_sass);
 
@@ -28,6 +29,8 @@ const scriptTask = () =>
         .pipe(typescript())
         // rename
         .pipe(rename("cust0m.js"))
+        // minify
+        .pipe(uglify())
         // output
         .pipe(dest("./dist"));
 
