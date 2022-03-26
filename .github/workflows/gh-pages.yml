@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Github Pages
+
+on:
+    push:
+        branches:
+            - master
+    workflow_dispatch:
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout 🛎️
+              uses: actions/checkout@v3
+
+            - name: Install and Build 🔧
+              run: |
+                  npm install
+                  npm run-script build:gh
+
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@4.2.5
+              with:
+                  branch: gh-pages
+                  folder: dist
