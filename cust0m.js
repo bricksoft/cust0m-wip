@@ -1,1 +1,1 @@
-console.log("cust0m pr0gramm!");
+(()=>{"use strict";console.log("cust0m pr0gramm")})();
