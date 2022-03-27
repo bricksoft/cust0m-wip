@@ -11,5 +11,6 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "removeComments": true
-    }
+    },
+    "include": ["src/content/globals.d.ts", "src/content/cust0m.ts"]
 }

@@ -1,20 +1,20 @@
 import { mkdir, writeFile } from "fs/promises";
 import { dest, parallel, src, TaskFunction } from "gulp";
 import cleanCSS from "gulp-clean-css";
-import rename from "gulp-rename";
 import gulpSass from "gulp-sass";
 import typescript from "gulp-typescript";
 import uglify from "gulp-uglify-es";
 import path from "path";
 import _sass from "sass";
 
+import webpackConfig from "./webpack-cust0m.config";
+import webpack from "webpack-stream";
+
 const sass = gulpSass(_sass);
 
 // content-style
 const styleTask = () =>
-    src("src/content/index.scss", {})
-        // rename first, else output will be in multiple files
-        .pipe(rename("cust0m.css"))
+    src("src/content/cust0m.scss", {})
         // build sass
         .pipe(sass.sync().on("error", sass.logError))
         // minify
@@ -24,13 +24,16 @@ const styleTask = () =>
 
 // content-script
 const scriptTask = () =>
-    src("src/content/index.ts")
+    src("src/content/cust0m.ts")
         // transpile
-        .pipe(typescript())
-        // rename
-        .pipe(rename("cust0m.js"))
-        // minify
-        .pipe(uglify())
+        .pipe(
+            webpack({
+                ...webpackConfig,
+                mode: (process.env.NODE_ENV || "production") as
+                    | "development"
+                    | "production",
+            })
+        )
         // output
         .pipe(dest("./dist"));
 

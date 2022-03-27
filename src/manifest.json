@@ -6,18 +6,16 @@
     "icons": {
         "128": "icon.png"
     },
-    "background": {
-        "persistent": true,
-        "scripts": ["background.js"]
-    },
     "content_scripts": [
         {
-            "js": ["cust0m.js"],
+            "js": ["cust0m_injector.js"],
             "matches": ["*://pr0gramm.com/*"]
         }
     ],
+    "web_accessible_resources": ["icon.png"],
     "permissions": [
         "storage",
-        "https://raw.githubusercontent.com/jabuco/cust0m/master/"
+        "notifications",
+        "https://jabuco.github.io/cust0m-wip/*"
     ]
 }
